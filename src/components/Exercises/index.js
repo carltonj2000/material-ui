@@ -12,35 +12,45 @@ const style = {
   }
 };
 
-export default ({ exercises }) => (
+export default ({
+  category,
+  exercises,
+  exercise: {
+    id,
+    title = "Welcome!",
+    description = "Select an exercise from the left."
+  },
+  onSelect
+}) => (
   <Grid container>
     <Grid item xs>
       <Paper style={{ ...style.Paper, marginRight: 5 }}>
-        {exercises.map(([muscle, exercises]) => (
-          <Fragment key={muscle}>
-            <Typography
-              variant="headline"
-              style={{ textTransform: "capitalize" }}
-            >
-              {muscle}
-            </Typography>
-            <List>
-              {exercises.map(({ title }, index) => (
-                <ListItem key={index}>
-                  <ListItemText>{title}</ListItemText>
-                </ListItem>
-              ))}
-            </List>
-          </Fragment>
-        ))}
+        {exercises.map(
+          ([muscle, exercises]) =>
+            !category || category === muscle ? (
+              <Fragment key={muscle}>
+                <Typography
+                  variant="headline"
+                  style={{ textTransform: "capitalize" }}
+                >
+                  {muscle}
+                </Typography>
+                <List>
+                  {exercises.map(({ title, id }, index) => (
+                    <ListItem button key={index} onClick={() => onSelect(id)}>
+                      <ListItemText>{title}</ListItemText>
+                    </ListItem>
+                  ))}
+                </List>
+              </Fragment>
+            ) : null
+        )}
       </Paper>
     </Grid>
     <Grid item xs>
       <Paper style={{ ...style.Paper, marginLeft: 5 }}>
-        <Typography variant="display1">Welcome!</Typography>
-        <Typography variant="subheading">
-          Select an exercise from the left.
-        </Typography>
+        <Typography variant="display1">{title}</Typography>
+        <Typography variant="subheading">{description}</Typography>
       </Paper>
     </Grid>
   </Grid>
