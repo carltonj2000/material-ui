@@ -28,7 +28,7 @@ class Create extends Component {
   };
 
   state = {
-    isOpen: true,
+    isOpen: false,
     exercise: this.MtExercise
   };
 
