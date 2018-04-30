@@ -22,39 +22,54 @@ class App extends Component {
     );
   }
 
-  handleCategorySelect = category => {
-    this.setState({ category });
-  };
+  handleCategorySelect = category => this.setState({ category });
 
-  handleExerciseSelect = id => {
+  handleExerciseSelect = id =>
     this.setState(({ exercises }) => ({
       exercise: exercises.find(e => e.id === id)
     }));
-  };
 
-  handleExerciseDelete = id => {
+  handleExerciseDelete = id =>
     this.setState(({ exercises }) => ({
       exercises: exercises.filter(e => e.id !== id)
     }));
-  };
+
+  handleSelectEdit = id =>
+    this.setState({
+      editMode: true,
+      exercise: exercises.find(e => e.id === id)
+    });
+
+  endSelectEdit = id => this.setState({ editMode: false });
 
   createExercise = exercise => {
     this.setState(({ exercises }) => ({
       exercises: [...exercises, exercise]
     }));
   };
+
+  editExercise = exercise => {
+    this.setState(({ exercises }) => ({
+      exercises: [...exercises.filter(ex => ex.id !== exercise.id), exercise]
+    }));
+  };
   render() {
     const exercises = this.getExercisesByMuscles();
-    const { category, exercise } = this.state;
+    const { category, exercise, editMode } = this.state;
     return (
       <Fragment>
         <Header muscles={muscles} onExerciseCreate={this.createExercise} />
         <Exercises
           category={category}
+          muscles={muscles}
           exercise={exercise}
           exercises={exercises}
+          editMode={editMode}
           onSelect={this.handleExerciseSelect}
           onDelete={this.handleExerciseDelete}
+          onSelectEdit={this.handleSelectEdit}
+          endSelectEdit={this.endSelectEdit}
+          onEdit={this.editExercise}
         />
         <Footer
           category={category}

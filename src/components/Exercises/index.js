@@ -5,7 +5,9 @@ import List, {
   ListItemText,
   ListItemSecondaryAction
 } from "material-ui/List";
-import { Delete } from "@material-ui/icons";
+import { Delete, Edit } from "@material-ui/icons";
+
+import Form from "./Form";
 
 const style = {
   Paper: {
@@ -20,15 +22,22 @@ const style = {
 export default ({
   category,
   exercises,
+  exercise,
+  muscles,
   exercise: {
     id,
     title = "Welcome!",
     description = "Select an exercise from the left."
   },
   onSelect,
-  onDelete
+  onDelete,
+  onSelectEdit,
+  endSelectEdit,
+  onEdit,
+  editMode
 }) => (
   <Grid container>
+    {console.log("exercise x2", exercise)}
     <Grid item xs>
       <Paper style={{ ...style.Paper, marginRight: 5 }}>
         {exercises.map(
@@ -46,6 +55,9 @@ export default ({
                     <ListItem button key={index} onClick={() => onSelect(id)}>
                       <ListItemText>{title}</ListItemText>
                       <ListItemSecondaryAction>
+                        <IconButton onClick={() => onSelectEdit(id)}>
+                          <Edit />
+                        </IconButton>
                         <IconButton onClick={() => onDelete(id)}>
                           <Delete />
                         </IconButton>
@@ -60,8 +72,19 @@ export default ({
     </Grid>
     <Grid item xs>
       <Paper style={{ ...style.Paper, marginLeft: 5 }}>
-        <Typography variant="display1">{title}</Typography>
-        <Typography variant="subheading">{description}</Typography>
+        {editMode ? (
+          <Form
+            muscles={muscles}
+            exercise={exercise}
+            onSubmit={onEdit}
+            finish={endSelectEdit}
+          />
+        ) : (
+          <Fragment>
+            <Typography variant="display1">{title}</Typography>
+            <Typography variant="subheading">{description}</Typography>
+          </Fragment>
+        )}
       </Paper>
     </Grid>
   </Grid>
