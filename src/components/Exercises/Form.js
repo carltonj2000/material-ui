@@ -11,65 +11,66 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles)(
-  class extends Component {
-    MtExercise = { title: "", description: "", muscles: "" };
-    state = this.props.exercise || this.MtExercise;
+class Form extends Component {
+  static getMtExercise = () => ({ title: "", description: "", muscles: "" });
+  state = Form.getMtExercise();
+  static getDerivedStateFromProps = (nxt, pre) =>
+    nxt === pre ? null : nxt.exercise || Form.getMtExercise();
 
-    handleChange = name => ({ target: { value } }) =>
-      this.setState({ [name]: value });
+  handleChange = name => ({ target: { value } }) =>
+    this.setState({ [name]: value });
 
-    handleSubmit = () => {
-      // TODO: validation
-      const exercise = this.state;
-      this.props.onSubmit({
-        ...exercise,
-        id: exercise.id || exercise.title.toLocaleLowerCase().replace(/ /g, "-")
-      });
-      this.props.finish();
-      this.setState(this.MtExercise);
-    };
-    render = () => {
-      const { muscles: categories, classes } = this.props;
-      const { title, muscles, description } = this.state;
-      return (
-        <Fragment>
-          <TextField
-            required
-            label="Title"
-            value={title}
-            onChange={this.handleChange("title")}
-            margin="normal"
-            className={classes.Form}
-          />
-          <br />
-          <FormControl className={classes.Form}>
-            <InputLabel>Muscles</InputLabel>
-            <Select value={muscles} onChange={this.handleChange("muscles")}>
-              {categories.map(muscle => (
-                <MenuItem key={muscle} value={muscle}>
-                  {muscle}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <br />
-          <TextField
-            required
-            label="Description"
-            value={description}
-            onChange={this.handleChange("description")}
-            multiline
-            rows="4"
-            margin="normal"
-            className={classes.Form}
-          />
-          <br />
-          <Button onClick={this.handleSubmit} color="primary" variant="raised">
-            Submit
-          </Button>
-        </Fragment>
-      );
-    };
-  }
-);
+  handleSubmit = () => {
+    // TODO: validation
+    const exercise = this.state;
+    this.props.onSubmit({
+      id: exercise.title.toLocaleLowerCase().replace(/ /g, "-"),
+      ...exercise
+    });
+    this.setState(Form.getMtExercise());
+  };
+  render = () => {
+    const { muscles: categories, classes } = this.props;
+    const { title, muscles, description } = this.state;
+    return (
+      <Fragment>
+        <TextField
+          required
+          label="Title"
+          value={title}
+          onChange={this.handleChange("title")}
+          margin="normal"
+          className={classes.Form}
+        />
+        <br />
+        <FormControl className={classes.Form}>
+          <InputLabel>Muscles</InputLabel>
+          <Select value={muscles} onChange={this.handleChange("muscles")}>
+            {categories.map(muscle => (
+              <MenuItem key={muscle} value={muscle}>
+                {muscle}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <br />
+        <TextField
+          required
+          label="Description"
+          value={description}
+          onChange={this.handleChange("description")}
+          multiline
+          rows="4"
+          margin="normal"
+          className={classes.Form}
+        />
+        <br />
+        <Button onClick={this.handleSubmit} color="primary" variant="raised">
+          {this.props.exercise ? "Change" : "Create"}
+        </Button>
+      </Fragment>
+    );
+  };
+}
+
+export default withStyles(styles)(Form);

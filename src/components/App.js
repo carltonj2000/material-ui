@@ -26,33 +26,35 @@ class App extends Component {
 
   handleExerciseSelect = id =>
     this.setState(({ exercises }) => ({
-      exercise: exercises.find(e => e.id === id)
+      exercise: exercises.find(e => e.id === id),
+      editMode: false
     }));
 
   handleExerciseDelete = id =>
     this.setState(({ exercises }) => ({
-      exercises: exercises.filter(e => e.id !== id)
+      exercises: exercises.filter(e => e.id !== id),
+      editMode: false,
+      exercise: {}
     }));
 
   handleSelectEdit = id =>
-    this.setState({
+    this.setState(({ exercises }) => ({
       editMode: true,
       exercise: exercises.find(e => e.id === id)
-    });
+    }));
 
-  endSelectEdit = id => this.setState({ editMode: false });
-
-  createExercise = exercise => {
+  createExercise = exercise =>
     this.setState(({ exercises }) => ({
       exercises: [...exercises, exercise]
     }));
-  };
 
-  editExercise = exercise => {
+  editExercise = exercise =>
     this.setState(({ exercises }) => ({
-      exercises: [...exercises.filter(ex => ex.id !== exercise.id), exercise]
+      exercises: [...exercises.filter(ex => ex.id !== exercise.id), exercise],
+      exercise,
+      editMode: false
     }));
-  };
+
   render() {
     const exercises = this.getExercisesByMuscles();
     const { category, exercise, editMode } = this.state;

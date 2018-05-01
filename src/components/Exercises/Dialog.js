@@ -12,9 +12,13 @@ import Form from "./Form";
 class Create extends Component {
   state = { isOpen: false };
   toggleModal = () => this.setState(state => ({ isOpen: !state.isOpen }));
+  handleFormSubmit = exercise => {
+    this.props.onCreate(exercise);
+    this.toggleModal();
+  };
 
   render = () => {
-    const { muscles, onCreate } = this.props;
+    const { muscles } = this.props;
     const { isOpen } = this.state;
     return (
       <Fragment>
@@ -29,11 +33,7 @@ class Create extends Component {
           <DialogTitle id="form-dialog-title">Create Exercise</DialogTitle>
           <DialogContent>
             <DialogContentText>Fill out the form below.</DialogContentText>
-            <Form
-              muscles={muscles}
-              onSubmit={onCreate}
-              finish={this.toggleModal}
-            />
+            <Form muscles={muscles} onSubmit={this.handleFormSubmit} />
           </DialogContent>
         </Dialog>
       </Fragment>

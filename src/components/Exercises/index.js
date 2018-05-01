@@ -32,12 +32,10 @@ export default ({
   onSelect,
   onDelete,
   onSelectEdit,
-  endSelectEdit,
   onEdit,
   editMode
 }) => (
   <Grid container>
-    {console.log("exercise x2", exercise)}
     <Grid item xs>
       <Paper style={{ ...style.Paper, marginRight: 5 }}>
         {exercises.map(
@@ -73,12 +71,7 @@ export default ({
     <Grid item xs>
       <Paper style={{ ...style.Paper, marginLeft: 5 }}>
         {editMode ? (
-          <Form
-            muscles={muscles}
-            exercise={exercise}
-            onSubmit={onEdit}
-            finish={endSelectEdit}
-          />
+          <Form muscles={muscles} exercise={exercise} onSubmit={onEdit} />
         ) : (
           <Fragment>
             <Typography variant="display1">{title}</Typography>
