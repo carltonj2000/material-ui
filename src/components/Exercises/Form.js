@@ -7,7 +7,7 @@ import { withStyles } from "material-ui/styles";
 
 const styles = theme => ({
   Form: {
-    width: 500
+    width: 250
   }
 });
 
