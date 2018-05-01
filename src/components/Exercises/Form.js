@@ -14,8 +14,8 @@ const styles = theme => ({
 class Form extends Component {
   static getMtExercise = () => ({ title: "", description: "", muscles: "" });
   state = Form.getMtExercise();
-  static getDerivedStateFromProps = (nxt, pre) =>
-    nxt === pre ? null : nxt.exercise || Form.getMtExercise();
+  static getDerivedStateFromProps = ({ exercise }) =>
+    exercise || Form.getMtExercise();
 
   handleChange = name => ({ target: { value } }) =>
     this.setState({ [name]: value });
